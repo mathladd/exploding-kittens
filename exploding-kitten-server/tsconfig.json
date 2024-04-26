@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Next.js",
+  "compilerOptions": {
+    "plugins": [{ "name": "next" }],
+    "allowJs": true,
+    "declaration": false,
+    "declarationMap": false,
+    "incremental": true,
+    "jsx": "preserve",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "noEmit": true,
+    "strict": false,
+    "target": "es5",
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*", "src/types/*"],
+      "@modules/*": ["rest/modules/*"],
+      "@services/*": ["services/*"]
+    },
+    "outDir": "./dist"
+  },
+  "paths": {},
+  "include": ["src", "mockData", "next-env.d.ts", "../types"],
+  "exclude": ["node_modules"]
+}
