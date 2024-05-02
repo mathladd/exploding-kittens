@@ -1,12 +1,9 @@
 import { Socket } from "socket.io";
 import { SocketIO } from "../types/common";
+import { UserAnnounceSocketConnection } from "../../types/eventsServerToClient";
 
 export const handlerUser = (socket: Socket, io: SocketIO) => {
-  const onDisconnect = () => {
-    socket.on("disconnect", () => {
-      console.log(`user ${socket.data.id} disconnected\n`);
-    });
-  };
-
-  onDisconnect();
+  socket.on("disconnect", () => {
+    console.log(`user ${socket.data.uid} disconnected\n`);
+  });
 };

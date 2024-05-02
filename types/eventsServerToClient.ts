@@ -1,8 +1,31 @@
 import { Player } from "./common";
+import { SocketData } from "./eventsOther";
 
-export type UserAnnounceSocketConnection = { userId: string };
+export type UserAnnounceSocketConnection = SocketData;
 
-export type RoomAnnounceJoin = { player: Player; roomId: string };
+export type Room = {
+  roomId: string;
+  roomLabel: string;
+  roomNumPlayers: number;
+  roomMaxPlayers: number;
+};
+
+export type OnRoomGetLobby = {
+  rooms: Room[];
+};
+
+export type AnnouncementCategory = "INFO" | "EVENT" | "ALERT" | "ERROR";
+
+export type Announcement = {
+  text: string;
+  type: AnnouncementCategory;
+};
+
+export type OnRoomJoinRoom = {
+  player: SocketData;
+  roomId: string;
+  isSuccess: boolean;
+};
 
 export type GameBroadcastTurn = { playerId: string };
 export type GameBroadcastState = {
@@ -15,7 +38,9 @@ export type ServerToClientUserEvents = {
   userAnnounceSocketConnection: (args: UserAnnounceSocketConnection) => void;
 };
 export type ServerToClientRoomEvents = {
-  roomAnnounceJoin: (args: RoomAnnounceJoin) => void;
+  onRoomGetLobby: (args: OnRoomGetLobby) => void;
+  onRoomJoinRoom: (args: OnRoomJoinRoom) => void;
+  announcement: (args: Announcement) => void;
 };
 export type ServerToClientGameEvents = {
   gameBroadcastTurn: (args: GameBroadcastTurn) => void;

@@ -1,13 +1,15 @@
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
 import { ClientToServerEvents } from "../types/eventsClientToServer";
-import { ServerToClientEvents } from "../types/eventsServerToClient";
+import {
+  ServerToClientEvents,
+  UserAnnounceSocketConnection,
+} from "../types/eventsServerToClient";
 import { InterServerEvents, SocketData } from "../types/eventsOther";
 import { CLIENT_URL } from "../constants";
 import { handlerUser } from "./handlers/handlerUser";
 import { handlerRoom } from "./handlers/handlerRoom";
 import { handlerGame } from "./handlers/handlerGame";
-import { announceConnect } from "./services/serviceUser";
 
 const express = require("express");
 const app = express();
@@ -27,11 +29,20 @@ const io = new Server<
 // const count = io.engine.clientsCount;
 // const roomSize = Number(io.sockets.adapter.rooms.get(roomId)?.size);
 const onConnection = (socket: Socket) => {
-  socket.data.id = socket.id;
-  socket.data.username = "abc";
-  socket.data.accessToken = "myAccessToken";
+  socket.data = {
+    uid: socket.id,
+    username: socket.id,
+    accessToken: "myAccessToken",
+  } as SocketData;
 
-  announceConnect(socket, io);
+  const userAnnounceSocketConnection: UserAnnounceSocketConnection = {
+    uid: socket.data.uid,
+    username: socket.data.username,
+    accessToken: socket.data.accessToken,
+  };
+  socket.emit("userAnnounceSocketConnection", userAnnounceSocketConnection);
+  console.log(`user ${socket.data.uid} connected`);
+
   handlerUser(socket, io);
   handlerRoom(socket, io);
   handlerGame(socket, io);
