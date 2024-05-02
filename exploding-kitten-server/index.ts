@@ -1,8 +1,8 @@
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
-import { ClientToServerEvents } from "../types/eventsClientToServer.ts";
-import { ServerToClientEvents } from "../types/eventsServerToClient.ts";
-import { InterServerEvents, SocketData } from "../types/eventsOther.ts";
+import { ClientToServerEvents } from "../types/eventsClientToServer";
+import { ServerToClientEvents } from "../types/eventsServerToClient";
+import { InterServerEvents, SocketData } from "../types/eventsOther";
 import { CLIENT_URL } from "../constants";
 import { handlerUser } from "./handlers/handlerUser";
 import { handlerRoom } from "./handlers/handlerRoom";
