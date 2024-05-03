@@ -27,6 +27,11 @@ export type OnRoomJoinRoom = {
   isSuccess: boolean;
 };
 
+export type OnRoomLeaveRoom = {
+  player: SocketData;
+  isSuccess: boolean;
+};
+
 export type GameBroadcastTurn = { playerId: string };
 export type GameBroadcastState = {
   players: { playerId: string; numCards: number }[];
@@ -40,6 +45,7 @@ export type ServerToClientUserEvents = {
 export type ServerToClientRoomEvents = {
   onRoomGetLobby: (args: OnRoomGetLobby) => void;
   onRoomJoinRoom: (args: OnRoomJoinRoom) => void;
+  onRoomLeaveRoom: (args: OnRoomLeaveRoom) => void;
   announcement: (args: Announcement) => void;
 };
 export type ServerToClientGameEvents = {

@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { SocketIO } from "../types/common";
 import { RoomGetLobby, RoomJoinRoom } from "../../types/eventsClientToServer";
-import { roomJoinRoom } from "../services/serviceRoom";
+import { roomJoinRoom, roomLeaveRoom } from "../services/serviceRoom";
 import { SocketData } from "../../types/eventsOther";
 import { ROOMS } from "../mockData/lobby";
 
@@ -37,8 +37,20 @@ export const handlerRoom = (socket: Socket, io: SocketIO) => {
     }
   });
 
-  socket.on("roomQuitRoom", async ({ roomId }: RoomJoinRoom) => {
-    socket.leave(roomId);
+  socket.on("roomLeaveRoom", async ({ uid }) => {
+    socket.rooms.forEach(async (room) => {
+      const data = await roomLeaveRoom(socket, io, uid);
+      const isSuccess = data?.isSuccess;
+      io.in(room).emit("onRoomLeaveRoom", {
+        player: {
+          uid: socket.data.uid,
+          username: socket.data.username,
+          accessToken: "",
+        } as SocketData,
+        isSuccess,
+      });
+      socket.leave(room);
+    });
   });
 
   // works when broadcast to all

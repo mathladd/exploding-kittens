@@ -22,10 +22,8 @@ export default function RoomModule() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomIdParam, user?.uid, userSocket]);
 
-  !!user?.username && !!roomId && console.log(`I'm ${user?.username} in room ${roomId}`);
-
   const onBackToLobby = () => {
-    userSocket.emit('roomQuitRoom', { uid: user?.uid, roomId });
+    userSocket.emit('roomLeaveRoom', { uid: user?.uid });
     router.push(PATH.LOBBY);
   };
 

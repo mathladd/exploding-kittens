@@ -1,6 +1,6 @@
 export type RoomGetLobby = { uid: string };
 export type RoomJoinRoom = { roomId: string; uid: string };
-export type RoomQuitRoom = { roomId: string; uid: string };
+export type RoomLeaveRoom = { uid: string };
 
 export type GamePlaySeeFuture = { cardId: string; playerId?: string };
 export type GamePlaySteal = { cardId: string; playerId?: string };
@@ -9,7 +9,7 @@ export type ClientToServerUserEvents = {};
 export type ClientToServerRoomEvents = {
   roomGetLobby: (args: RoomGetLobby) => void;
   roomJoinRoom: (args: RoomJoinRoom) => void;
-  roomQuitRoom: (args: RoomQuitRoom) => void;
+  roomLeaveRoom: (args: RoomLeaveRoom) => void;
 };
 export type ClientToServerGameEvents = {
   gamePlaySeeFuture: (args: GamePlaySeeFuture) => void;
