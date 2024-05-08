@@ -10,14 +10,33 @@ import { CLIENT_URL } from "../constants";
 import { handlerUser } from "./handlers/handlerUser";
 import { handlerRoom } from "./handlers/handlerRoom";
 import { handlerGame } from "./handlers/handlerGame";
+import { query } from "./helpers/db";
+import { onGetMe } from "./services/serviceUser";
 
 const express = require("express");
+
 const app = express();
 const server = createServer(app);
 
-// app.get("/", (req, res) => {
-//   res.send("<h1>Hello world</h1>");
-// });
+// parse json request body
+app.use(express.json());
+
+// parse urlencoded request body
+app.use(express.urlencoded({ extended: true }));
+
+// gzip compression
+
+try {
+  const result = query({ text: "SELECT * FROM users" });
+  console.log(result);
+} catch (err) {
+  console.error(err);
+}
+
+app.post("/user/me", (req, res) => {
+  console.log("11111", req.body);
+  onGetMe({ accessToken: req?.accessToken });
+});
 
 const io = new Server<
   ClientToServerEvents,

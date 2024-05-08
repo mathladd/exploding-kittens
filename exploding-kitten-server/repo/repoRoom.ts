@@ -1,9 +1,7 @@
-// import pg from "pg";
 import { Socket } from "socket.io";
 import { SocketIO } from "../types/common";
 
-// const { Client } = pg;
-export function updateRoomJoinRoom({ roomId }: { roomId: string }) {
+export async function updateRoomJoinRoom({ roomId }: { roomId: string }) {
   return { isSuccess: true };
 }
 
