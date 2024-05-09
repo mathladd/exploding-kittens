@@ -4,3 +4,5 @@ export const PATH = {
   LOBBY: '/lobby',
   ROOM: '/room',
 };
+
+export const ENCRYPTION_SALT = 'vng-rewards-encryption-salty-salt';

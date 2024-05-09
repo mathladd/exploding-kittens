@@ -5,9 +5,11 @@ import useAuth from 'hooks/useAuth';
 
 export default function MainPage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
 
-  // useEffect(() => {
-  //   router.push(PATH.LOBBY);
-  // }, [router]);
+  useEffect(() => {
+    if (!isLoading) {
+      !user ? router.push(PATH.LOGIN) : router.push(PATH.LOBBY);
+    }
+  }, [isLoading, user, router]);
 }

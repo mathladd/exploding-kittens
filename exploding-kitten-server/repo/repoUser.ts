@@ -1,14 +1,28 @@
 import { query } from "../helpers/db";
 
-export function createUser({}) {}
+const USER_TABLE = "users";
 
-export async function readUser({ accessToken }: { accessToken: string }) {
+export async function createUser({ uid, username, created_at }) {
   try {
-    console.log(accessToken);
     const result = await query({
-      text: `SELECT * FROM users WHERE users.access_token = ${accessToken}`,
+      text: `INSERT INTO ${USER_TABLE} (uid, username, created_at) 
+      VALUES (${uid}, ${username}, ${created_at});`,
     });
-    // console.log("readUser result:", result.rows);
+    console.log("readUser result:", result.rows[0]);
+    return result.rows[0];
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function readUser({ saltedData }: { saltedData: string }) {
+  try {
+    console.log(saltedData);
+    const result = await query({
+      text: `SELECT * FROM ${USER_TABLE} WHERE ${USER_TABLE}.saltedData = '${saltedData}';`,
+    });
+    console.log("readUser result:", result.rows[0]);
+    return result.rows[0];
   } catch (err) {
     console.error(err);
   }

@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { useAtom, useSetAtom } from 'jotai';
+import { SessionProvider } from 'next-auth/react';
 import { socketAtom, userAtom } from 'atoms/connection';
 import { UserSocket } from 'types/common';
 import { SERVER_URL } from '../../../constants';
@@ -12,7 +13,7 @@ import { UserAnnounceSocketConnection } from '../../../types/eventsServerToClien
 
 const montserrat = Montserrat({ subsets: ['latin'] });
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const queryClient = new QueryClient();
   const [userSocket, setUserSocket] = useAtom(socketAtom);
   const setUser = useSetAtom(userAtom);
@@ -37,9 +38,11 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <main className={`flex min-h-screen flex-col bg-white ${montserrat.className}`}>
-        <Component {...pageProps} />
-      </main>
+      <SessionProvider session={session}>
+        <main className={`flex min-h-screen flex-col bg-white ${montserrat.className}`}>
+          <Component {...pageProps} />
+        </main>
+      </SessionProvider>
     </QueryClientProvider>
   );
 }

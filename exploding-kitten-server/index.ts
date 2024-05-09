@@ -14,9 +14,15 @@ import { query } from "./helpers/db";
 import { onGetMe } from "./services/serviceUser";
 
 const express = require("express");
-
+const cors = require("cors");
 const app = express();
-const server = createServer(app);
+
+app.use(cors());
+
+const corsOptions = {
+  origin: CLIENT_URL,
+  optionsSuccessStatus: 200,
+};
 
 // parse json request body
 app.use(express.json());
@@ -24,7 +30,7 @@ app.use(express.json());
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
 
-// gzip compression
+const server = createServer(app);
 
 try {
   const result = query({ text: "SELECT * FROM users" });
@@ -33,9 +39,10 @@ try {
   console.error(err);
 }
 
-app.post("/user/me", (req, res) => {
-  console.log("11111", req.body);
-  onGetMe({ accessToken: req?.accessToken });
+app.post("/user/me", cors(corsOptions), async (req, res) => {
+  console.log("11111", req.headers.authorization);
+  // const user = await onGetMe({ saltedData: req?.body.saltedData });
+  // res.json(user);
 });
 
 const io = new Server<
@@ -43,7 +50,7 @@ const io = new Server<
   ServerToClientEvents,
   InterServerEvents,
   SocketData
->(server, { cors: { origin: CLIENT_URL } });
+>(server, { cors: corsOptions });
 
 // const count = io.engine.clientsCount;
 // const roomSize = Number(io.sockets.adapter.rooms.get(roomId)?.size);
