@@ -1,3 +1,5 @@
+import { ENCRYPTION_SALT } from 'constants/config';
+
 const textToChars = (text: string) => text.split('').map((c) => c.charCodeAt(0));
 
 export const stringEncryption = (salt: string, str: string) => {
@@ -20,3 +22,6 @@ export const stringDecryption = (salt: string, encoded: string) => {
     ?.map((charCode) => String.fromCharCode(charCode))
     ?.join('');
 };
+
+export const hashPass = ({ username, password }: { username: string; password: string }) =>
+  stringEncryption(ENCRYPTION_SALT, `${username}${password}`);

@@ -1,6 +1,6 @@
-export type RoomGetLobby = { uid: string };
-export type RoomJoinRoom = { roomId: string; uid: string };
-export type RoomLeaveRoom = { uid: string };
+export type RoomGetLobby = { uid: number };
+export type RoomJoinRoom = { roomId: string; uid: number };
+export type RoomLeaveRoom = { uid: number };
 
 export type GamePlaySeeFuture = { cardId: string; playerId?: string };
 export type GamePlaySteal = { cardId: string; playerId?: string };

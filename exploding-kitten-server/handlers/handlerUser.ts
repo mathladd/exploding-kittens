@@ -1,6 +1,5 @@
 import { Socket } from "socket.io";
 import { SocketIO } from "../types/common";
-import { UserAnnounceSocketConnection } from "../../types/eventsServerToClient";
 import { onRoomLeaveRoom } from "../services/serviceRoom";
 
 export const handlerUser = (socket: Socket, io: SocketIO) => {

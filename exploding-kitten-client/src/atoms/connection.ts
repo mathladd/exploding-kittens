@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import { UserSocket } from 'types/common';
-import { SocketData } from '../../../types/eventsOther';
+import { PlayerData } from '../../../types/auth';
 
 export const socketAtom = atom<UserSocket>(null as UserSocket);
-export const userAtom = atom<SocketData>(null as SocketData);
+export const userAtom = atom<PlayerData>(null as PlayerData);
 export const announcementAtom = atom<string[]>([]);

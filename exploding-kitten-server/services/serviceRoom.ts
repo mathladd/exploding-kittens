@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { SocketIO } from "../types/common";
-import { SocketData } from "../../types/eventsOther";
 import { updateRoomJoinRoom, updateRoomLeaveRoom } from "../repo/repoRoom";
+import { SocketData } from "../../types/auth";
 
 export const onRoomJoinRoom = async ({
   socket,
@@ -17,7 +17,6 @@ export const onRoomJoinRoom = async ({
       player: {
         uid: socket.data.uid,
         username: socket.data.username,
-        accessToken: "",
       } as SocketData,
       roomId,
       isSuccess: false,
@@ -30,7 +29,6 @@ export const onRoomJoinRoom = async ({
       player: {
         uid: socket.data.uid,
         username: socket.data.username,
-        accessToken: "",
       } as SocketData,
       roomId,
       isSuccess,

@@ -1,25 +1,39 @@
 import { query } from "../helpers/db";
+import { getErrorStatus, getSuccessStatus } from "../template/api";
 
 const USER_TABLE = "users";
 
-export async function createUser({ uid, username, created_at }) {
+export async function createUser({ username, passhash, email }) {
   try {
+    const insertEmail = email ?? "NULL";
+    const insertCreatedAt = new Date()
+      .toISOString()
+      .replace("T", " ")
+      .slice(0, 19);
     const result = await query({
-      text: `INSERT INTO ${USER_TABLE} (uid, username, created_at) 
-      VALUES (${uid}, ${username}, ${created_at});`,
+      text: `INSERT INTO ${USER_TABLE} (username, passhash, email, created_at) 
+      VALUES ('${username}', '${passhash}', '${insertEmail}', '${insertCreatedAt}');`,
     });
-    console.log("readUser result:", result.rows[0]);
-    return result.rows[0];
+    return getSuccessStatus(undefined);
   } catch (err) {
-    console.error(err);
+    return getErrorStatus(err);
   }
 }
 
-export async function readUser({ saltedData }: { saltedData: string }) {
+export async function readUser({
+  username,
+  passhash,
+}: {
+  username: string;
+  passhash: string;
+}) {
   try {
-    console.log(saltedData);
     const result = await query({
-      text: `SELECT * FROM ${USER_TABLE} WHERE ${USER_TABLE}.saltedData = '${saltedData}';`,
+      text: `
+        SELECT * FROM ${USER_TABLE} 
+        WHERE 1=1
+          AND ${USER_TABLE}.username = '${username}' 
+          AND ${USER_TABLE}.passhash = '${passhash}';`,
     });
     console.log("readUser result:", result.rows[0]);
     return result.rows[0];

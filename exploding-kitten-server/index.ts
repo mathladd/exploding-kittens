@@ -5,13 +5,14 @@ import {
   ServerToClientEvents,
   UserAnnounceSocketConnection,
 } from "../types/eventsServerToClient";
-import { InterServerEvents, SocketData } from "../types/eventsOther";
+import { InterServerEvents } from "../types/eventsOther";
 import { CLIENT_URL } from "../constants";
 import { handlerUser } from "./handlers/handlerUser";
 import { handlerRoom } from "./handlers/handlerRoom";
 import { handlerGame } from "./handlers/handlerGame";
 import { query } from "./helpers/db";
-import { onGetMe } from "./services/serviceUser";
+import { onCreateMe, onGetMe } from "./services/serviceUser";
+import { SocketData } from "../types/auth";
 
 const express = require("express");
 const cors = require("cors");
@@ -39,10 +40,23 @@ try {
   console.error(err);
 }
 
+app.post("/user/create", cors(corsOptions), async (req, res) => {
+  console.log("11111", req.body);
+  const user = await onCreateMe({
+    username: req?.body.username,
+    passhash: req?.body.passhash,
+    email: req?.body.email ?? undefined,
+  });
+  res.json(user);
+});
+
 app.post("/user/me", cors(corsOptions), async (req, res) => {
-  console.log("11111", req.headers.authorization);
-  // const user = await onGetMe({ saltedData: req?.body.saltedData });
-  // res.json(user);
+  console.log("11111", req.body);
+  const user = await onGetMe({
+    username: req?.body.username,
+    passhash: req?.body.passhash,
+  });
+  res.json(user);
 });
 
 const io = new Server<
@@ -58,13 +72,14 @@ const onConnection = (socket: Socket) => {
   socket.data = {
     uid: socket.id,
     username: socket.id,
-    accessToken: "myAccessToken",
   } as SocketData;
 
   const userAnnounceSocketConnection: UserAnnounceSocketConnection = {
     uid: socket.data.uid,
     username: socket.data.username,
-    accessToken: socket.data.accessToken,
+    email: "",
+    createdAt: new Date(),
+    lastLoginAt: new Date(),
   };
   socket.emit("userAnnounceSocketConnection", userAnnounceSocketConnection);
   console.log(`user ${socket.data.uid} connected`);

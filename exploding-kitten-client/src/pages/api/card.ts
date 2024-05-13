@@ -1,4 +1,4 @@
-import { Card, Player } from '../../../types/common';
+import { Card, Player } from '../../../../types/common';
 
 export const getDeck = (): Card[] => [
   {

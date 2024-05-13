@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { socketAtom, userAtom } from 'atoms/connection';
 import { PATH } from 'constants/config';
-import { OnRoomGetLobby, Room } from '../../../types/eventsServerToClient';
+import { OnRoomGetLobby, Room } from '../../../../types/eventsServerToClient';
 
 export default function LobbyModule() {
   const userSocket = useAtomValue(socketAtom);

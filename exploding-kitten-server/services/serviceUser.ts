@@ -1,9 +1,25 @@
-import { Socket } from "socket.io";
-import { SocketIO } from "../types/common";
-import { UserAnnounceSocketConnection } from "../../types/eventsServerToClient";
-import { readUser } from "../repo/repoUser";
+import { createUser, readUser } from "../repo/repoUser";
 
-export const onGetMe = async ({ saltedData }: { saltedData: string }) => {
-  const user = await readUser({ saltedData });
+export const onCreateMe = async ({
+  username,
+  passhash,
+  email,
+}: {
+  username: string;
+  passhash: string;
+  email?: string;
+}) => {
+  const user = await createUser({ username, passhash, email });
+  return user;
+};
+
+export const onGetMe = async ({
+  username,
+  passhash,
+}: {
+  username: string;
+  passhash: string;
+}) => {
+  const user = await readUser({ username, passhash });
   return user;
 };

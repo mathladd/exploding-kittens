@@ -1,7 +1,7 @@
+import { SocketData, PlayerData } from "./auth";
 import { Player } from "./common";
-import { SocketData } from "./eventsOther";
 
-export type UserAnnounceSocketConnection = SocketData;
+export type UserAnnounceSocketConnection = PlayerData;
 
 export type Room = {
   roomId: string;
