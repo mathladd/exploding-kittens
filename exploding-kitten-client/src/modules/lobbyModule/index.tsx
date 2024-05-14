@@ -1,6 +1,7 @@
 import { useAtomValue } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import clsx from 'clsx';
 import { socketAtom, userAtom } from 'atoms/connection';
 import { PATH } from 'constants/config';
 import useAuth from 'hooks/useAuth';
@@ -65,18 +66,37 @@ export default function LobbyModule() {
           </Stack>
         </Stack>
       </Modal>
-      <div className="flex space-x-8">
-        {lobbyRooms.map((room) => (
-          <button
-            type="button"
-            key={room.roomId}
-            className="w-20 h-10 bg-slate-500 rounded-xl"
-            onClick={() => onJoinRoom(room.roomId)}
-          >
-            {room.roomLabel}
-          </button>
-        ))}
-      </div>
+      <Stack className="flex-col w-full h-full space-y-4">
+        <div>Lobby: </div>
+        <div className="grid grid-cols-3 gap-2">
+          {lobbyRooms.map((room) => (
+            <button
+              type="button"
+              key={room.roomId}
+              className="w-28 h-16 bg-slate-600 rounded-lg text-xs text-start overflow-auto"
+              onClick={() => onJoinRoom(room.roomId)}
+            >
+              <Stack className="flex-col w-full h-full items-start justify-start px-2 py-2">
+                <Stack className="w-full justify-between space-x-1 font-bold">
+                  <div>Name:</div>
+                  <div className="whitespace-break-spaces">{room.roomLabel}</div>
+                </Stack>
+                <Stack className="w-full justify-between space-x-1">
+                  <div>Players:</div>
+                  <div
+                    className={clsx({
+                      'text-red-400': room.roomNumPlayers === room.roomMaxPlayers,
+                      'text-emerald-400': room.roomNumPlayers < room.roomMaxPlayers,
+                    })}
+                  >
+                    {room.roomNumPlayers}/{room.roomMaxPlayers}
+                  </div>
+                </Stack>
+              </Stack>
+            </button>
+          ))}
+        </div>
+      </Stack>
     </>
   );
 }

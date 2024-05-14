@@ -9,4 +9,16 @@ export const ROOMS = [
     roomNumPlayers: 4,
     roomMaxPlayers: 4,
   },
+  {
+    roomId: "yellowId",
+    roomLabel: "yellow",
+    roomNumPlayers: 3,
+    roomMaxPlayers: 4,
+  },
+  {
+    roomId: "orangeId",
+    roomLabel: "orange superhuman",
+    roomNumPlayers: 1,
+    roomMaxPlayers: 4,
+  },
 ] as Room[];

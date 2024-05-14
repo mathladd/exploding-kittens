@@ -14,6 +14,7 @@ export const handlerRoom = (socket: Socket, io: SocketIO) => {
   socket.on("roomLeaveRoom", async ({ uid }) =>
     onRoomLeaveRoom({ socket, io, uid })
   );
+  // socket.on("roomCreateRoom", )
 
   // works when broadcast to all
   // io.emit("gameBroadcastTurn", { playerId: "1" });
