@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import useAuth from 'hooks/useAuth';
 import { PATH } from 'constants/config';
 import Stack from 'components/Stack';
+import Button from 'components/Button';
 
 export default function LoginModule() {
   const router = useRouter();
@@ -49,21 +50,12 @@ export default function LoginModule() {
           />
         </Stack>
       </Stack>
-      <button
-        type="button"
-        className="text-white bg-orange-500 border rounded-lg p-2 disabled:opacity-50 disabled:border-0"
-        onClick={onLoginClick}
-        disabled={!username || !password}
-      >
+      <Button variant="primary" onClick={onLoginClick} disabled={!username || !password}>
         Login
-      </button>
-      <button
-        type="button"
-        className="text-blue-500 rounded-lg p-2 disabled:opacity-50 disabled:border-0"
-        onClick={onSignupClick}
-      >
+      </Button>
+      <Button variant="secondary" onClick={onSignupClick}>
         Sign Up!
-      </button>
+      </Button>
     </Stack>
   );
 }

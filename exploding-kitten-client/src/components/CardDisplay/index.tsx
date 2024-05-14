@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import Stack from 'components/Stack';
-import Modal from 'components/Modal';
 import { Card } from '../../../../types/common';
 
 export default function CardDisplay({

@@ -1,14 +1,14 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useAtomValue } from 'jotai';
 import { hashPass } from 'helpers/string';
 import { createMe } from 'pages/api/user';
 import { PATH } from 'constants/config';
-import { PlayerData } from '../../../types/auth';
+import { userAtom } from 'atoms/connection';
 
 export default function useAuth() {
   const { data: session, status } = useSession();
-  const router = useRouter();
+  const user = useAtomValue(userAtom);
   const [isSignupLoading, setIsSignupLoading] = useState(false);
 
   const signUp = async ({
@@ -28,27 +28,18 @@ export default function useAuth() {
   };
 
   const login = ({ username, password }: { username: string; password: string }) => {
-    signIn('credentials', { username, password, callbackUrl: PATH.LOBBY, redirect: false }).then(
-      ({ ok, error }) => {
-        if (ok) {
-          router.push(PATH.LOBBY);
-        } else {
-          console.log('Error: ', error);
-        }
-      },
-    );
+    signIn('credentials', { username, password, callbackUrl: PATH.LOBBY, redirect: false });
   };
 
-  const logout = () => {
-    signOut().then(() => router.push(PATH.LOBBY));
-  };
+  const logout = () => signOut();
 
   return {
     signUp,
     isSignupLoading,
     login,
     logout,
-    user: session?.user as unknown as PlayerData,
+    session,
+    user,
     status,
   };
 }

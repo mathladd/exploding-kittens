@@ -2,11 +2,19 @@ import { axios } from 'helpers/axios';
 import { APIRes } from 'types/common';
 import { PlayerData } from '../../../../types/auth';
 
-export const getMe = async ({ username, passhash }: { username: string; passhash: string }) => {
+export const getMe = async ({
+  username,
+  passhash,
+  isLogin,
+}: {
+  username: string;
+  passhash: string;
+  isLogin: boolean;
+}) => {
   const token = 'my_token';
   const user = await axios.post(
     `/user/me`,
-    { username, passhash },
+    { username, passhash, isLogin },
     {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

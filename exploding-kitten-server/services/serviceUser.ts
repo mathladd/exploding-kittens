@@ -1,4 +1,4 @@
-import { createUser, readUser } from "../repo/repoUser";
+import { createUser, readUser, updateUser } from "../repo/repoUser";
 
 export const onCreateMe = async ({
   username,
@@ -16,10 +16,20 @@ export const onCreateMe = async ({
 export const onGetMe = async ({
   username,
   passhash,
+  isLogin,
 }: {
   username: string;
   passhash: string;
+  isLogin?: boolean;
 }) => {
   const user = await readUser({ username, passhash });
+
+  if (!!user && !!isLogin) {
+    updateUser({
+      username,
+      passhash,
+      lastAccess: new Date().toISOString().replace("T", " ").slice(0, 19),
+    });
+  }
   return user;
 };

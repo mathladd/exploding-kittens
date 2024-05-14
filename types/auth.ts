@@ -4,7 +4,7 @@ export interface SocketData {
 }
 
 export interface PlayerData {
-  uid: number;
+  uid: string;
   username: string;
   email: string;
   createdAt: Date;

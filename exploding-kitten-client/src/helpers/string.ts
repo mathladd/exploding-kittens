@@ -2,6 +2,21 @@ import { ENCRYPTION_SALT } from 'constants/config';
 
 const textToChars = (text: string) => text.split('').map((c) => c.charCodeAt(0));
 
+export const shortenString = (str?: string, r = 6, l = 4) => {
+  if (!str) return '';
+
+  const ret = str;
+
+  if (ret.length <= r + l + 2) {
+    return ret;
+  }
+
+  const { length } = ret;
+  const left = ret.slice(0, r);
+  const right = ret.slice(length - l, length);
+  return [left, right].join('..');
+};
+
 export const stringEncryption = (salt: string, str: string) => {
   if (!str) return '';
 

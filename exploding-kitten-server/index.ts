@@ -33,15 +33,14 @@ app.use(express.urlencoded({ extended: true }));
 
 const server = createServer(app);
 
+// test db connection
 try {
-  const result = query({ text: "SELECT * FROM users" });
-  console.log(result);
+  const result = query({ text: "SELECT 1" });
 } catch (err) {
   console.error(err);
 }
 
 app.post("/user/create", cors(corsOptions), async (req, res) => {
-  console.log("11111", req.body);
   const user = await onCreateMe({
     username: req?.body.username,
     passhash: req?.body.passhash,
@@ -51,10 +50,10 @@ app.post("/user/create", cors(corsOptions), async (req, res) => {
 });
 
 app.post("/user/me", cors(corsOptions), async (req, res) => {
-  console.log("11111", req.body);
   const user = await onGetMe({
-    username: req?.body.username,
-    passhash: req?.body.passhash,
+    username: req?.body?.username,
+    passhash: req?.body?.passhash,
+    isLogin: req?.body?.isLogin,
   });
   res.json(user);
 });
@@ -69,12 +68,9 @@ const io = new Server<
 // const count = io.engine.clientsCount;
 // const roomSize = Number(io.sockets.adapter.rooms.get(roomId)?.size);
 const onConnection = (socket: Socket) => {
-  socket.data = {
-    uid: socket.id,
-    username: socket.id,
-  } as SocketData;
+  socket.data = { uid: socket.id, username: socket.id } as SocketData;
 
-  const userAnnounceSocketConnection: UserAnnounceSocketConnection = {
+  const userAnnounceSocketConnection = {
     uid: socket.data.uid,
     username: socket.data.username,
     email: "",
@@ -82,7 +78,6 @@ const onConnection = (socket: Socket) => {
     lastLoginAt: new Date(),
   };
   socket.emit("userAnnounceSocketConnection", userAnnounceSocketConnection);
-  console.log(`user ${socket.data.uid} connected`);
 
   handlerUser(socket, io);
   handlerRoom(socket, io);

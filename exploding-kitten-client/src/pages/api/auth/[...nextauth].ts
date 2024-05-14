@@ -22,7 +22,7 @@ export const authOptions = {
           username: credentials?.username,
           password: credentials?.password,
         });
-        const user = await getMe({ username, passhash });
+        const user = await getMe({ username, passhash, isLogin: true });
         if (user) {
           return (
             ({
@@ -46,8 +46,8 @@ export const authOptions = {
       token,
       user,
       account,
-      profile,
-    }: {
+    }: // profile,
+    {
       token: JWT;
       user: AdapterUser;
       account: Account;
@@ -56,9 +56,9 @@ export const authOptions = {
       //
 
       // Persist the OAuth access_token and or the user id to the token right after signin
-      console.log('jwt token', token);
-      console.log('account', account);
-      console.log('profile', profile);
+      // console.log('jwt token', token);
+      // console.log('account', account);
+      // console.log('profile', profile);
       const returnToken = { ...token };
 
       if (account) {
@@ -68,11 +68,19 @@ export const authOptions = {
       return returnToken;
     },
     // eslint-disable-next-line @typescript-eslint/require-await
-    async session({ session, token, user }: { session: Session; token: JWT; user: AdapterUser }) {
+    async session({
+      session,
+      // user,
+      token,
+    }: {
+      session: Session;
+      user: AdapterUser;
+      token: JWT;
+    }) {
       // Send properties to the client, like an access_token and user id from a provider.
-      console.log('session', session);
-      console.log('token', token);
-      console.log('user', user);
+      // console.log('session', session);
+      // console.log('token', token);
+      // console.log('user', user);
 
       const returnSession = { ...session } as unknown as NextAuthSession;
       // returnSession.accessToken = token.accessToken as string;

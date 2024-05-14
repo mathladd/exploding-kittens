@@ -35,11 +35,37 @@ export async function readUser({
           AND ${USER_TABLE}.username = '${username}' 
           AND ${USER_TABLE}.passhash = '${passhash}';`,
     });
-    console.log("readUser result:", result.rows[0]);
+
     return result.rows[0];
   } catch (err) {
     console.error(err);
   }
 }
-export function updateUser({}) {}
+export async function updateUser({
+  username,
+  passhash,
+  lastAccess,
+}: {
+  username: string;
+  passhash: string;
+  lastAccess?: string;
+}) {
+  try {
+    let insertLastAccess = "";
+    if (lastAccess) {
+      insertLastAccess = `SET last_access = '${lastAccess}'`;
+    }
+    const result = await query({
+      text: `
+        UPDATE ${USER_TABLE}
+        ${insertLastAccess}
+        WHERE 1=1
+          AND username = '${username}'
+          AND passhash = '${passhash}';`,
+    });
+    return result.rows[0];
+  } catch (err) {
+    console.error(err);
+  }
+}
 export function deleteUser({}) {}
