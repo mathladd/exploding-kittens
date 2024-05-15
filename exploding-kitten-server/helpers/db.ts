@@ -9,7 +9,7 @@ const pool = new Pool({
   database: "dogknight",
 });
 
-export const query = async ({
+export const query = async <T>({
   text,
   params,
   callback,
@@ -22,7 +22,7 @@ export const query = async ({
   const res = await pool.query(text, params);
   const duration = Date.now() - start;
   console.log("executed query", { text, duration, rows: res.rowCount });
-  return res;
+  return res as { rows: T[] };
 };
 
 // export const getClient = () => {

@@ -1,7 +1,7 @@
+import { USER_TABLE } from "../constants/dbTables";
 import { query } from "../helpers/db";
-import { getErrorStatus, getSuccessStatus } from "../template/api";
-
-const USER_TABLE = "users";
+import { dbErrorStatus, dbSuccessStatus } from "../template/api";
+import { TableUserSchema } from "../types/repo";
 
 export async function createUser({ username, passhash, email }) {
   try {
@@ -14,9 +14,9 @@ export async function createUser({ username, passhash, email }) {
       text: `INSERT INTO ${USER_TABLE} (username, passhash, email, created_at) 
       VALUES ('${username}', '${passhash}', '${insertEmail}', '${insertCreatedAt}');`,
     });
-    return getSuccessStatus(undefined);
+    return { ...dbSuccessStatus, data: null };
   } catch (err) {
-    return getErrorStatus(err);
+    return { ...dbErrorStatus, data: null };
   }
 }
 
@@ -28,7 +28,7 @@ export async function readUser({
   passhash: string;
 }) {
   try {
-    const result = await query({
+    const result = await query<TableUserSchema>({
       text: `
         SELECT * FROM ${USER_TABLE} 
         WHERE 1=1
@@ -36,11 +36,12 @@ export async function readUser({
           AND ${USER_TABLE}.passhash = '${passhash}';`,
     });
 
-    return result.rows[0];
+    return { ...dbSuccessStatus, data: result.rows[0] };
   } catch (err) {
     console.error(err);
   }
 }
+
 export async function updateUser({
   username,
   passhash,
@@ -55,7 +56,7 @@ export async function updateUser({
     if (lastAccess) {
       insertLastAccess = `SET last_access = '${lastAccess}'`;
     }
-    const result = await query({
+    const result = await query<TableUserSchema>({
       text: `
         UPDATE ${USER_TABLE}
         ${insertLastAccess}
@@ -63,7 +64,7 @@ export async function updateUser({
           AND username = '${username}'
           AND passhash = '${passhash}';`,
     });
-    return result.rows[0];
+    return { ...dbSuccessStatus, data: result.rows[0] };
   } catch (err) {
     console.error(err);
   }

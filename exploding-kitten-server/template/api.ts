@@ -1,11 +1,9 @@
-export const getSuccessStatus = (data: any) => ({
+export const dbSuccessStatus = {
   isSuccess: true,
   completed: new Date(),
-  data,
-});
+};
 
-export const getErrorStatus = (err: Error) => ({
+export const dbErrorStatus = {
   isSuccess: false,
   completed: new Date(),
-  data: err,
-});
+};

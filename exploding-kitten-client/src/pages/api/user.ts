@@ -1,6 +1,6 @@
 import { axios } from 'helpers/axios';
-import { APIRes } from 'types/common';
 import { PlayerData } from '../../../../types/auth';
+import { APIRes } from '../../../../types/api';
 
 export const getMe = async ({
   username,
@@ -45,5 +45,5 @@ export const createMe = async ({
       },
     },
   );
-  return user?.data as APIRes;
+  return user?.data as APIRes<>;
 };

@@ -1,13 +1,13 @@
 import { SocketData, PlayerData } from "./auth";
-import { Player } from "./common";
 
 export type UserAnnounceSocketConnection = PlayerData;
 
 export type Room = {
   roomId: string;
-  roomLabel: string;
-  roomNumPlayers: number;
-  roomMaxPlayers: number;
+  roomName: string;
+  hostname: string;
+  playerCount: number;
+  maxPlayers: number;
 };
 
 export type OnRoomGetLobby = {

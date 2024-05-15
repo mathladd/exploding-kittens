@@ -1,7 +1,68 @@
 import { Socket } from "socket.io";
 import { SocketIO } from "../types/common";
-import { updateRoomJoinRoom, updateRoomLeaveRoom } from "../repo/repoRoom";
+import {
+  createRoom,
+  readRoom,
+  updateRoomJoinRoom,
+  updateRoomLeaveRoom,
+} from "../repo/repoRoom";
 import { SocketData } from "../../types/auth";
+
+export const onRoomGetLobby = async ({
+  socket,
+  io,
+  uid,
+}: {
+  socket: Socket;
+  io: SocketIO;
+  uid: string;
+}) => {
+  socket.emit("onRoomGetLobby", await onRoomGetRoom({ socket, io, uid }));
+};
+
+export const onRoomCreateRoom = async ({
+  socket,
+  io,
+  uid,
+  roomName,
+  maxPlayers,
+}: {
+  socket: Socket;
+  io: SocketIO;
+  uid: string;
+  roomName: string;
+  maxPlayers: number;
+}) => {
+  const data = await createRoom({ hostId: uid, roomName, maxPlayers });
+  const lobby = await onRoomGetRoom({ socket, io, uid });
+  !!data && !!lobby && io.emit("onRoomGetLobby", lobby);
+};
+
+export const onRoomGetRoom = async ({
+  socket,
+  io,
+  uid,
+  roomId,
+}: {
+  socket: Socket;
+  io: SocketIO;
+  uid: string;
+  roomId?: string;
+}) => {
+  const room = await readRoom({ roomId });
+  if (room.isSuccess === false) return null;
+  const data = {
+    rooms:
+      room?.data?.map((row) => ({
+        roomId: String(row?.room_id),
+        roomName: row?.room_name,
+        hostname: row?.host_name,
+        playerCount: row?.player_count,
+        maxPlayers: row?.max_players,
+      })) ?? [],
+  };
+  return data;
+};
 
 export const onRoomJoinRoom = async ({
   socket,
