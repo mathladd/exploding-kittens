@@ -56,6 +56,7 @@ export const onRoomGetRoom = async ({
       room?.data?.map((row) => ({
         roomId: String(row?.room_id),
         roomName: row?.room_name,
+        hostId: String(row?.host_id),
         hostname: row?.host_name,
         playerCount: row?.player_count,
         maxPlayers: row?.max_players,

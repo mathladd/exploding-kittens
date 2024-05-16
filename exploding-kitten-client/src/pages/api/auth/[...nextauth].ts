@@ -60,7 +60,6 @@ export const authOptions = {
       // console.log('account', account);
       // console.log('profile', profile);
       const returnToken = { ...token };
-
       if (account) {
         // returnToken.accessToken = account.access_token;
         returnToken.user = user;

@@ -45,5 +45,5 @@ export const createMe = async ({
       },
     },
   );
-  return user?.data as APIRes<>;
+  return user?.data as APIRes<PlayerData>;
 };

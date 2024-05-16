@@ -24,13 +24,9 @@ export async function createRoom({
     const result = await query<TableRoomSchema>({
       text: `
       INSERT INTO ${ROOM_TABLE} (host_id, room_name, player_count, max_players, created_at, last_joined) 
-        VALUES ('${hostId}', '${roomName}', 1, '${maxPlayers}', '${insertCreatedAt}', '${insertCreatedAt}');
-      SELECT * FROM ${ROOM_TABLE} 
-        WHERE 1=1
-          AND ${ROOM_TABLE}.room_name = '${roomName}'
-          AND ${ROOM_TABLE}.host_id = '${hostId}';`,
+        VALUES ('${hostId}', '${roomName}', 1, '${maxPlayers}', '${insertCreatedAt}', '${insertCreatedAt}');`,
     });
-    return { ...dbSuccessStatus, data: result.rows[0] };
+    return { ...dbSuccessStatus, data: null };
   } catch (err) {
     return { ...dbErrorStatus, data: null };
   }
@@ -45,6 +41,7 @@ export async function readRoom({ roomId }: { roomId?: string }) {
       SELECT 
         ${ROOM_TABLE}.room_id,
         ${ROOM_TABLE}.room_name,
+        ${ROOM_TABLE}.host_id,
         ${USER_TABLE}.username AS host_name,
         ${ROOM_TABLE}.player_count,
         ${ROOM_TABLE}.max_players

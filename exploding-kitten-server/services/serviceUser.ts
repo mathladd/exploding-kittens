@@ -10,7 +10,7 @@ export const onCreateMe = async ({
   email?: string;
 }) => {
   const user = await createUser({ username, passhash, email });
-  return user;
+  return user?.data;
 };
 
 export const onGetMe = async ({
@@ -22,6 +22,7 @@ export const onGetMe = async ({
   passhash: string;
   isLogin?: boolean;
 }) => {
+  console.log("getme", username, passhash);
   const user = await readUser({ username, passhash });
 
   if (!!user && !!isLogin) {
@@ -31,5 +32,5 @@ export const onGetMe = async ({
       lastAccess: new Date().toISOString().replace("T", " ").slice(0, 19),
     });
   }
-  return user;
+  return user?.data;
 };

@@ -5,6 +5,7 @@ export type UserAnnounceSocketConnection = PlayerData;
 export type Room = {
   roomId: string;
   roomName: string;
+  hostId: string;
   hostname: string;
   playerCount: number;
   maxPlayers: number;
